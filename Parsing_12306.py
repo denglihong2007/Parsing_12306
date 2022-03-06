@@ -72,12 +72,12 @@ def Parsing_12306(text:str)->ped.Train:
     return train
 
 def get_search():
-        url = ("https://search.12306.cn/search/v1/train/search?callback=jQuery&keyword={train}&date={date}").format(train = train_number,date = date)
-        r = requests.get(url,headers=headers)
-        with open("search.json", "wb") as code:
-            code.write(r.content)
-        with open('search.json', encoding='utf-8', errors='ignore') as fp:
-            return(fp.read())
+    url = ("https://search.12306.cn/search/v1/train/search?callback=jQuery&keyword={train}&date={date}").format(train = train_number,date = date)
+    r = requests.get(url,headers=headers)
+    with open("search.json", "wb") as code:
+        code.write(r.content)
+    with open('search.json', encoding='utf-8', errors='ignore') as fp:
+        return(fp.read())
 
 print("多规则版，规则文件在“rules.txt”，格式为“原站名 新站名 修改到达分钟 修改出发分钟”，可以用换行来增加规则。程序作者：CDK6182CHR、猪排骨。制作日期：2022.3.6。")
 date = str(input("您想爬取的日期是？（一次爬取仅可输入一次，如20220127）"))
