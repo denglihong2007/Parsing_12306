@@ -36,6 +36,8 @@ pip install xlwt
 pip install xlrd
 pip install xpinyin
 pip install networkx
+pip install requests
+cd libs
 cd Timetable_new-master
 python setup.py build
 python setup.py sdist
