@@ -1,0 +1,15 @@
+pip install PyQt5
+pip install xlwt
+pip install xlrd
+pip install xpinyin
+pip install networkx
+pip install requests
+cd libs
+cd Timetable_new
+python setup.py build
+python setup.py sdist
+python setup.py install
+cd..
+cd train_graph
+python setup.py install
+pause

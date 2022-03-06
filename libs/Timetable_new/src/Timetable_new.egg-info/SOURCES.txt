@@ -1,0 +1,11 @@
+setup.py
+src/__init__.py
+src/Timetable_new/__init__.py
+src/Timetable_new/checi3.py
+src/Timetable_new/connect2.py
+src/Timetable_new/direction.py
+src/Timetable_new/utility.py
+src/Timetable_new.egg-info/PKG-INFO
+src/Timetable_new.egg-info/SOURCES.txt
+src/Timetable_new.egg-info/dependency_links.txt
+src/Timetable_new.egg-info/top_level.txt
