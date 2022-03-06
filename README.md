@@ -18,7 +18,7 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 
 ### **运行依赖库安装：**
 
-●点击[链接](https://github.com/denglihong2007/Parsing_12306/releases)下载最新的`releases`。
+●点击[链接](https://github.com/denglihong2007/Parsing_12306/archive/refs/heads/main.zip)下载最新的`releases`。
 
 ●解压缩程序文件。
 
