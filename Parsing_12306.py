@@ -18,7 +18,7 @@ while (rule != list([])):
     if (rule != list([])):
         station_lists.append(rule[0])
 
-def train_query_parse(text:str)->ped.Train:
+def Parsing_12306(text:str)->ped.Train:
     d = json.loads(text)['data']['data']
     train = ped.Train(graph)
     for dct in d:
@@ -136,6 +136,6 @@ while True:
     if __name__ == '__main__':
         with open('queryByTrainNo.json', encoding='utf-8', errors='ignore') as fp:
             text = fp.read()
-        train = train_query_parse(text)
+        train = Parsing_12306(text)
         train.setFullCheci(search_train)
         graph.addTrain(train)
