@@ -7,7 +7,7 @@ Gitee链接： https://www.gitee.com/zhupaigu/Parsing_12306
 
 ## **直接运行（`Only For Windows`）：**
 
-●前往 https://gitee.com/zhupaigu/Parsing_12306/releases 或 https://gitee.com/zhupaigu/Parsing_12306/releases 下载exe文件，直接解压运行即可。
+●前往 https://github.com/denglihong2007/Parsing_12306/releases 或 https://gitee.com/zhupaigu/Parsing_12306/releases 下载exe文件，直接解压运行即可。
 
 ## **如何使用源码来运行：**
 
