@@ -1,13 +1,9 @@
 # `Parsing_12306`
 ## **项目简介：**
 
-<<<<<<< HEAD
 将`12306`车次信息转换为`pyETRC/qETRC`的车次文件。
-Github链接：https://www.github.com/denglihong2007/Parsing_12306。
-Gitee链接：https://www.gitee.com/zhupaigu/Parsing_12306。
-=======
-将`12306`车次信息转换为`pyETRC/qETRC`的车次文件。Github链接：https://www.github.com/denglihong2007/Parsing_12306。Gitee链接：https://www.gitee.com/zhupaigu/Parsing_12306。
->>>>>>> 3739906fd09ac3d97d85d006479bc15487caf7c0
+Github链接：https://www.github.com/denglihong2007/Parsing_12306
+Gitee链接：https://www.gitee.com/zhupaigu/Parsing_12306
 
 ## **如何使用源码来运行：**
 
