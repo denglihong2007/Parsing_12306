@@ -5,6 +5,7 @@ pip install xpinyin
 pip install networkx
 pip install requests
 cd libs
+python-3.9.10.exe
 cd Timetable_new
 python setup.py build
 python setup.py sdist

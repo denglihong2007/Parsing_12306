@@ -11,9 +11,11 @@ Gitee链接： https://www.gitee.com/zhupaigu/Parsing_12306
 
 ## **如何使用源码来运行：**
 
-### **基础环境安装：**
+### **运行依赖库安装：**
 
-●安装`Python 3.7+`，具体教程请自行搜索。
+●点击[链接](https://github.com/denglihong2007/Parsing_12306/archive/refs/heads/main.zip)下载最新的`releases`。
+
+●解压缩程序文件。
 
 ●对于网络不好的用户，请在`Terminal`中运行以下代码来将`pip`软件源更换为清华源。
 
@@ -21,12 +23,6 @@ Gitee链接： https://www.gitee.com/zhupaigu/Parsing_12306
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ```
-
-### **运行依赖库安装：**
-
-●点击[链接](https://github.com/denglihong2007/Parsing_12306/archive/refs/heads/main.zip)下载最新的`releases`。
-
-●解压缩程序文件。
 
 #### **对于`Windows`用户：**
 
@@ -44,6 +40,7 @@ pip install xpinyin
 pip install networkx
 pip install requests
 cd libs
+python-3.9.10.exe
 cd Timetable_new-master
 python setup.py build
 python setup.py sdist
