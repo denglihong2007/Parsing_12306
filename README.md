@@ -2,7 +2,11 @@
 ## **项目简介：**
 
 将`12306`车次信息转换为`pyETRC/qETRC`的车次文件。
+
+本项目使用`GPLv3`许可证，具体请查看`LICENSE`。
+
 Github链接： https://www.github.com/denglihong2007/Parsing_12306
+
 Gitee链接： https://www.gitee.com/zhupaigu/Parsing_12306
 
 ## **直接运行（`Only For Windows`）：**
@@ -68,12 +72,3 @@ pause
 ●本程序仅在`Windows 11 and macOS and Linux`平台上测试通过，其它平台请自行测试。
 
 ●多规则请使用回车间隔。
-
-## **License & Copyright**
-Copyright 2022 denglihong2007
-
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
