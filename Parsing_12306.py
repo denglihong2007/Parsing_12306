@@ -104,9 +104,14 @@ while True:
     if search == '/**/jQuery({"data":null,"status":true,"errorMsg":""});':
         search = "error"
 
-    while search == "error":
+    train_no = search[33:45]
+    train_number_get = train_no[5:10].lstrip("0")
+
+    while search == "error" or train_number_get != train_number:
         train_number = input("当日未查询到此车次，请重新输入。")
         search = get_search()
+        train_no = search[33:45]
+        train_number_get = train_no[5:10].lstrip("0")
         if search == '/**/jQuery({"data":[],"status":true,"errorMsg":""});':
             search = "error"
         if search == '/**/jQuery({"data":null,"status":true,"errorMsg":""});':
@@ -118,7 +123,6 @@ while True:
             os.remove("search.json")
             os._exit(0)
 
-    train_no = search[33:45]
     search_train = search[38:43].lstrip("0")
     start_station = re.sub(chinese, "", search[105:117])
     to_station = re.sub(chinese, "", search[124:136])
