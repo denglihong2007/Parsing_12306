@@ -2,22 +2,13 @@
 import requests
 import json
 import os
+import csv
+import codecs
 import re
 import datetime
 from train_graph import data as ped
 
 graph = ped.Graph()
-
-file = open('rules.txt', encoding='utf-8-sig', errors='ignore')
-station_lists = []
-rules_lists = []
-rule = "0"
-while (rule != list([])):
-    rule = file.readline().split()
-    rules_lists.append(rule)
-    if (rule != list([])):
-        station_lists.append(rule[0])
-
 
 def Parsing_12306(text: str) -> ped.Train:
     d = json.loads(text)['data']['data']
@@ -27,19 +18,6 @@ def Parsing_12306(text: str) -> ped.Train:
             dct['arrive_time'] = dct['start_time']
         if ('station_name' in dct and dct['station_name'] in station_lists):
             rules_list = rules_lists[station_lists.index(dct['station_name'])]
-            if (('start_station_name' in dct) and rules_list[0] == dct['start_station_name']):
-                dct['start_station_name'] = rules_list[1]
-                if (rules_list[2] != '0'):
-                    Time = datetime.datetime.strptime(
-                        dct['arrive_time'], "%H:%M")
-                    dct['arrive_time'] = (
-                        Time + datetime.timedelta(minutes=int(rules_list[2]))).strftime("%H:%M")
-                if (rules_list[3] != '0'):
-                    Time = datetime.datetime.strptime(
-                        dct['start_time'], "%H:%M")
-                    dct['start_time'] = (
-                        Time + datetime.timedelta(minutes=int(rules_list[3]))).strftime("%H:%M")
-                print(dct)
             if (('station_name' in dct) and rules_list[0] == dct['station_name']):
                 dct['station_name'] = rules_list[1]
                 if (rules_list[2] != '0'):
@@ -69,19 +47,7 @@ def Parsing_12306(text: str) -> ped.Train:
                     dct['start_time'] = (
                         Time + datetime.timedelta(minutes=int(rules_list[3]))).strftime("%H:%M")
                 print(dct)
-            if (('station_name' in dct) and rules_list[0] == dct['station_name']):
-                dct['station_name'] = rules_list[1]
-                if (rules_list[2] != '0'):
-                    Time = datetime.datetime.strptime(
-                        dct['arrive_time'], "%H:%M")
-                    dct['arrive_time'] = (
-                        Time + datetime.timedelta(minutes=int(rules_list[2]))).strftime("%H:%M")
-                if (rules_list[3] != '0'):
-                    Time = datetime.datetime.strptime(
-                        dct['start_time'], "%H:%M")
-                    dct['start_time'] = (
-                        Time + datetime.timedelta(minutes=int(rules_list[3]))).strftime("%H:%M")
-                print(dct)
+        csv_writer.writerow([train_number,dct['station_name'],dct['arrive_time'],dct['start_time']])
         train.addStation(dct['station_name'], dct['arrive_time'],
                          dct['start_time'], business=True)
         if sfz := dct.get('start_station_name'):
@@ -101,11 +67,23 @@ def get_search():
         return(fp.read())
 
 
-print("多规则版，规则文件在“rules.txt”，格式为“原站名 新站名 修改到达分钟 修改出发分钟”，可以用换行来增加规则。程序作者：CDK6182CHR、猪排骨。制作日期：2022.3.8。")
+print("多规则版，规则文件在“rules.txt”，格式为“原站名 新站名 修改到达分钟 修改出发分钟”，可以用换行来增加规则。程序作者：CDK6182CHR、猪排骨。制作日期：2022.03.11。")
 date = str(input("您想爬取的日期是？（一次爬取仅可输入一次，如20220127）"))
+
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36 Edge/97.0.1072.69'}
 chinese = "[A-Za-z0-9\!\%\[\]\,\。\"\:\_]"
+csv_file = codecs.open('train_number.csv','w',encoding='utf-8-sig')
+csv_writer = csv.writer(csv_file)
+file = open('rules.txt', encoding='utf-8-sig', errors='ignore')
+station_lists = []
+rules_lists = []
+rule = "0"
+while (rule != list([])):
+    rule = file.readline().split()
+    rules_lists.append(rule)
+    if (rule != list([])):
+        station_lists.append(rule[0])
 
 with open("libs\\station_name.js", encoding='utf-8', errors='ignore') as fp:
     telecode_list = fp.read()
@@ -115,11 +93,12 @@ while True:
 
     if train_number == "exit":
         graph.save('query_parse.pyetdb')
+        csv_file.close()
         os.remove("queryByTrainNo.json")
         os.remove("search.json")
         os._exit(0)
-    search = get_search()
 
+    search = get_search()
     if search == '/**/jQuery({"data":[],"status":true,"errorMsg":""});':
         search = "error"
     if search == '/**/jQuery({"data":null,"status":true,"errorMsg":""});':
@@ -134,6 +113,7 @@ while True:
             search = "error"
         if train_number == "exit":
             graph.save('query_parse.pyetdb')
+            csv_file.close()
             os.remove("queryByTrainNo.json")
             os.remove("search.json")
             os._exit(0)
