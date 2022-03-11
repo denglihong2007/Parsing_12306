@@ -37,11 +37,6 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ●打开终端，参考以下`bat`代码安装运行依赖库。
 
 ```shell
-pip install PyQt5
-pip install xlwt
-pip install xlrd
-pip install xpinyin
-pip install networkx
 pip install requests
 cd libs
 python-3.9.10.exe
