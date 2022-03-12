@@ -63,12 +63,9 @@ def get_search():
     url = ("https://search.12306.cn/search/v1/train/search?callback=jQuery&keyword={train}&date={date}").format(
         train=train_number, date=date)
     print ("获取的搜索索引为" + url +"。")
-    r = requests.get(url, headers=headers)
-    with open("search.json", "wb") as code:
-        code.write(r.content)
-    with open('search.json', encoding='utf-8', errors='ignore') as fp:
-        return(fp.read())
-
+    r = requests.get(url, headers=headers,timeout = 15)
+    r.encoding = 'utf-8'
+    return r.text
 
 print("多规则版，规则文件在“rules.txt”，格式为“广元 走马岭 0 1”（意为将广元站站名改为走马岭，并以广元站发车时间提前一分钟作为通过时间），可以用换行来增加规则。本项目使用并遵循GPLv3协议。程序作者：CDK6182CHR、denglihong2007。制作日期：2022.03.12。")
 date = str(input("您想爬取的日期是？（一次爬取仅可输入一次，如20220127）"))
@@ -98,8 +95,6 @@ while True:
     if train_number == "exit":
         graph.save('query_parse.pyetdb')
         csv_file.close()
-        os.remove("queryByTrainNo.json")
-        os.remove("search.json")
         os._exit(0)
 
     search = get_search()
@@ -123,8 +118,6 @@ while True:
         if train_number == "exit":
             graph.save('query_parse.pyetdb')
             csv_file.close()
-            os.remove("queryByTrainNo.json")
-            os.remove("search.json")
             os._exit(0)
 
     search_train = search[38:43].lstrip("0")
@@ -134,7 +127,6 @@ while True:
         start_station) + 1:telecode_list.find(start_station + "|") + len(start_station) + 4]
     to_station_code = telecode_list[telecode_list.find(to_station + "|") + len(
         to_station) + 1:telecode_list.find(to_station + "|") + len(to_station) + 4]
-
     year = date[0:4]
     month = date[4:6]
     day = date[6:]
@@ -145,12 +137,11 @@ while True:
     print("查询到" + search_train + "的代码为" + train_no + "，起点站为" + start_station + "，终点站为" +
           to_station + "，起点电报码为" + start_station_code + "，终点电报码为" + to_station_code + "。")
 
-    r = requests.get(url)
-    with open("queryByTrainNo.json", "wb") as code:
-        code.write(r.content)
+    r = requests.get(url, headers=headers,timeout = 15)
+    r.encoding = 'utf-8'
+
     if __name__ == '__main__':
-        with open('queryByTrainNo.json', encoding='utf-8', errors='ignore') as fp:
-            text = fp.read()
+        text = r.text
         train = Parsing_12306(text)
         train.setFullCheci(search_train)
         graph.addTrain(train)
