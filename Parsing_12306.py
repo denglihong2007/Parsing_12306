@@ -25,11 +25,13 @@ def Parsing_12306(text: str) -> ped.Train:
                         dct['arrive_time'], "%H:%M")
                     dct['arrive_time'] = (
                         Time + datetime.timedelta(minutes=int(rules_list[2]))).strftime("%H:%M")
+                    dct['start_time'] = dct['arrive_time']
                 if (rules_list[3] != '0'):
                     Time = datetime.datetime.strptime(
                         dct['start_time'], "%H:%M")
                     dct['start_time'] = (
                         Time + datetime.timedelta(minutes=int(rules_list[3]))).strftime("%H:%M")
+                    dct['arrive_time'] = dct['start_time']
                 print(dct)
         if ('start_station_name' in dct and dct['start_station_name'] in station_lists):
             rules_list = rules_lists[station_lists.index(
@@ -60,6 +62,7 @@ def Parsing_12306(text: str) -> ped.Train:
 def get_search():
     url = ("https://search.12306.cn/search/v1/train/search?callback=jQuery&keyword={train}&date={date}").format(
         train=train_number, date=date)
+    print ("获取的搜索索引为" + url +"。")
     r = requests.get(url, headers=headers)
     with open("search.json", "wb") as code:
         code.write(r.content)
@@ -67,7 +70,7 @@ def get_search():
         return(fp.read())
 
 
-print("多规则版，规则文件在“rules.txt”，格式为“原站名 新站名 修改到达分钟 修改出发分钟”，可以用换行来增加规则。本项目使用并遵循GPLv3协议。程序作者：CDK6182CHR、denglihong2007。制作日期：2022.03.11。")
+print("多规则版，规则文件在“rules.txt”，格式为“广元 走马岭 0 1”（意为将广元站站名改为走马岭，并以广元站发车时间提前一分钟作为通过时间），可以用换行来增加规则。本项目使用并遵循GPLv3协议。程序作者：CDK6182CHR、denglihong2007。制作日期：2022.03.12。")
 date = str(input("您想爬取的日期是？（一次爬取仅可输入一次，如20220127）"))
 
 headers = {
@@ -89,6 +92,7 @@ with open("libs\\station_name.js", encoding='utf-8', errors='ignore') as fp:
     telecode_list = fp.read()
 
 while True:
+    print("")
     train_number = input("您想爬取的车次是？（输入exit退出）")
 
     if train_number == "exit":
@@ -137,7 +141,7 @@ while True:
 
     url = ("https://kyfw.12306.cn/otn/czxx/queryByTrainNo?train_no={train_no}&from_station_telecode={start_station_code}&to_station_telecode={to_station_code}&depart_date={year}-{month}-{day}").format(
         train_no=train_no, start_station_code=start_station_code, to_station_code=to_station_code, year=year, month=month, day=day)
-
+    print("获取的车次信息为" + url + "。")
     print("查询到" + search_train + "的代码为" + train_no + "，起点站为" + start_station + "，终点站为" +
           to_station + "，起点电报码为" + start_station_code + "，终点电报码为" + to_station_code + "。")
 
