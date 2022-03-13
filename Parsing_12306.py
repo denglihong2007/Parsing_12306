@@ -97,6 +97,7 @@ while True:
         csv_file.close()
         os._exit(0)
 
+
     search = get_search()
     if search == '/**/jQuery({"data":[],"status":true,"errorMsg":""});':
         search = "error"
@@ -120,7 +121,6 @@ while True:
             csv_file.close()
             os._exit(0)
 
-    search_train = search[38:43].lstrip("0")
     start_station = re.sub(chinese, "", search[105:117])
     to_station = re.sub(chinese, "", search[124:136])
     start_station_code = telecode_list[telecode_list.find(start_station + "|") + len(
@@ -134,7 +134,7 @@ while True:
     url = ("https://kyfw.12306.cn/otn/czxx/queryByTrainNo?train_no={train_no}&from_station_telecode={start_station_code}&to_station_telecode={to_station_code}&depart_date={year}-{month}-{day}").format(
         train_no=train_no, start_station_code=start_station_code, to_station_code=to_station_code, year=year, month=month, day=day)
     print("获取的车次信息为" + url + "。")
-    print("查询到" + search_train + "的代码为" + train_no + "，起点站为" + start_station + "，终点站为" +
+    print("查询到" + train_number_get + "的代码为" + train_no + "，起点站为" + start_station + "，终点站为" +
           to_station + "，起点电报码为" + start_station_code + "，终点电报码为" + to_station_code + "。")
 
     r = requests.get(url, headers=headers,timeout = 15)
@@ -143,5 +143,5 @@ while True:
     if __name__ == '__main__':
         text = r.text
         train = Parsing_12306(text)
-        train.setFullCheci(search_train)
+        train.setFullCheci(train_number_get)
         graph.addTrain(train)
