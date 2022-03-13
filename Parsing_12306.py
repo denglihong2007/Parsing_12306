@@ -4,7 +4,6 @@ import json
 import os
 import csv
 import codecs
-import re
 import datetime
 from train_graph import data as ped
 
@@ -63,11 +62,14 @@ def get_search():
     url = ("https://search.12306.cn/search/v1/train/search?callback=jQuery&keyword={train}&date={date}").format(
         train=train_number, date=date)
     print ("获取的搜索索引为" + url +"。")
-    r = requests.get(url, headers=headers,timeout = 15)
+    r = requests.get(url, headers=headers)
     r.encoding = 'utf-8'
-    return r.text
+    if r.text == '/**/jQuery({"data":[],"status":true,"errorMsg":""});' or r.text == '/**/jQuery({"data":null,"status":true,"errorMsg":""});':
+        return("error")
+    else:
+        return r.text
 
-print("多规则版，规则文件在“rules.txt”，格式为“广元 走马岭 0 1”（意为将广元站站名改为走马岭，并以广元站发车时间提前一分钟作为通过时间），可以用换行来增加规则。本项目使用并遵循GPLv3协议。程序作者：CDK6182CHR、denglihong2007。制作日期：2022.03.12。")
+print("多规则版，规则文件在“rules.txt”，格式为“广元 走马岭 0 1”（意为将广元站站名改为走马岭，并以广元站发车时间提前一分钟作为通过时间），可以用换行来增加规则。本项目使用并遵循GPLv3协议。程序作者：CDK6182CHR、denglihong2007。制作日期：2022.03.13。")
 date = str(input("您想爬取的日期是？（一次爬取仅可输入一次，如20220127）"))
 
 headers = {
@@ -97,32 +99,25 @@ while True:
         csv_file.close()
         os._exit(0)
 
-
     search = get_search()
-    if search == '/**/jQuery({"data":[],"status":true,"errorMsg":""});':
-        search = "error"
-    if search == '/**/jQuery({"data":null,"status":true,"errorMsg":""});':
-        search = "error"
-
-    train_no = search[33:45]
-    train_number_get = train_no[5:10].lstrip("0")
+    if search != "error":
+        train_search = (json.loads(search[19:-31])[0])
+        train_number_get = train_search['station_train_code']
 
     while search == "error" or train_number_get != train_number:
         train_number = input("当日未查询到此车次，请重新输入。")
         search = get_search()
-        train_no = search[33:45]
-        train_number_get = train_no[5:10].lstrip("0")
-        if search == '/**/jQuery({"data":[],"status":true,"errorMsg":""});':
-            search = "error"
-        if search == '/**/jQuery({"data":null,"status":true,"errorMsg":""});':
-            search = "error"
+        if search != "error":
+            train_search = (json.loads(search[19:-31])[0])
+            train_number_get = train_search['station_train_code']
         if train_number == "exit":
             graph.save('query_parse.pyetdb')
             csv_file.close()
             os._exit(0)
 
-    start_station = re.sub(chinese, "", search[105:117])
-    to_station = re.sub(chinese, "", search[124:136])
+    train_no = train_search['train_no']
+    start_station = train_search['from_station']
+    to_station = train_search['to_station']
     start_station_code = telecode_list[telecode_list.find(start_station + "|") + len(
         start_station) + 1:telecode_list.find(start_station + "|") + len(start_station) + 4]
     to_station_code = telecode_list[telecode_list.find(to_station + "|") + len(
@@ -137,7 +132,7 @@ while True:
     print("查询到" + train_number_get + "的代码为" + train_no + "，起点站为" + start_station + "，终点站为" +
           to_station + "，起点电报码为" + start_station_code + "，终点电报码为" + to_station_code + "。")
 
-    r = requests.get(url, headers=headers,timeout = 15)
+    r = requests.get(url, headers=headers)
     r.encoding = 'utf-8'
 
     if __name__ == '__main__':
