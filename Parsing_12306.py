@@ -57,6 +57,8 @@ def Parsing_12306(text: str) -> ped.Train:
             train.zdz = zdz
     return train
 
+def train_get(search):
+    return(json.loads(search[19:-31])[0])
 
 def get_search():
     url = ("https://search.12306.cn/search/v1/train/search?callback=jQuery&keyword={train}&date={date}").format(
@@ -74,7 +76,6 @@ date = str(input("您想爬取的日期是？（一次爬取仅可输入一次�
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36 Edge/97.0.1072.69'}
-chinese = "[A-Za-z0-9\!\%\[\]\,\。\"\:\_]"
 csv_file = codecs.open('train_number.csv','w',encoding='utf-8-sig')
 csv_writer = csv.writer(csv_file)
 file = open('rules.txt', encoding='utf-8-sig', errors='ignore')
@@ -101,23 +102,23 @@ while True:
 
     search = get_search()
     if search != "error":
-        train_search = (json.loads(search[19:-31])[0])
-        train_number_get = train_search['station_train_code']
+        get_train = train_get(search)
+        train_number_get = get_train['station_train_code']
 
     while search == "error" or train_number_get != train_number:
         train_number = input("当日未查询到此车次，请重新输入。")
         search = get_search()
-        if search != "error":
-            train_search = (json.loads(search[19:-31])[0])
-            train_number_get = train_search['station_train_code']
         if train_number == "exit":
             graph.save('query_parse.pyetdb')
             csv_file.close()
             os._exit(0)
+        if search != "error":
+            get_train = (json.loads(search[19:-31])[0])
+            train_number_get = get_train['station_train_code']
 
-    train_no = train_search['train_no']
-    start_station = train_search['from_station']
-    to_station = train_search['to_station']
+    train_no = get_train['train_no']
+    start_station = get_train['from_station']
+    to_station = get_train['to_station']
     start_station_code = telecode_list[telecode_list.find(start_station + "|") + len(
         start_station) + 1:telecode_list.find(start_station + "|") + len(start_station) + 4]
     to_station_code = telecode_list[telecode_list.find(to_station + "|") + len(
