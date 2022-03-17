@@ -9,7 +9,7 @@ Github链接： https://www.github.com/denglihong2007/Parsing_12306
 
 Gitee链接： https://www.gitee.com/zhupaigu/Parsing_12306
 
-## **直接运行（`Only For Windows`）：**
+## **直接运行（`Only For Windows 8 And Later`）：**
 
 ●前往 https://github.com/denglihong2007/Parsing_12306/releases 或 https://gitee.com/zhupaigu/Parsing_12306/releases 下载exe文件，直接解压运行即可。
 
@@ -17,16 +17,9 @@ Gitee链接： https://www.gitee.com/zhupaigu/Parsing_12306
 
 ### **运行依赖库安装：**
 
-●点击[链接](https://github.com/denglihong2007/Parsing_12306/archive/refs/heads/main.zip)下载最新的`releases`。
+●点击[链接](https://github.com/denglihong2007/Parsing_12306/archive/refs/heads/main.zip)通过`Github`下载最新的`releases`，如通过码云下载需要登陆账号并选择下载压缩包。
 
 ●解压缩程序文件。
-
-●对于网络不好的用户，请在`Terminal`中运行以下代码来将`pip`软件源更换为清华源。
-
-```shell
-pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U
-pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
-```
 
 #### **对于`Windows`用户：**
 
@@ -37,22 +30,24 @@ pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 ●打开终端，参考以下`bat`代码安装运行依赖库。
 
 ```shell
-pip install requests
 cd libs
 python-3.9.10.exe
-cd Timetable_new-master
+pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U
+pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
+pip install requests
+cd Timetable_new
 python setup.py build
 python setup.py sdist
 python setup.py install
 cd..
-cd train_graph-master
+cd train_graph
 python setup.py install
 pause
 ```
 
 ### **运行程序：**
 
-●直接打开`Parsing_12306.py`或在终端运行`python Parsing_12306.py`。
+●直接打开`Parsing_12306.py`或在终端运行`py Parsing_12306.py`。
 
 ## **注意事项**
 
