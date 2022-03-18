@@ -25,13 +25,13 @@ Gitee链接： https://www.gitee.com/zhupaigu/Parsing_12306
 
 ●双击`setup.bat`安装运行依赖库，静候安装完成。
 
-#### **对于其它`OS`用户（未测试，示例`Python 3.9.10`）：**
+#### **对于其它`OS`用户：**
 
 ●打开终端，参考以下`bat`代码安装运行依赖库。
 
 ```shell
 cd libs
-python-3.9.10.exe
+python-3.10.3-amd64.exe
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple pip -U
 pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple
 pip install requests
