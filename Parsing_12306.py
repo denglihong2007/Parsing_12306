@@ -1,7 +1,6 @@
 # coding:utf-8
 import requests
 import json
-import os
 import csv
 import codecs
 import datetime
@@ -57,9 +56,6 @@ def Parsing_12306(text: str) -> ped.Train:
             train.zdz = zdz
     return train
 
-def train_get(search):
-    return(json.loads(search[19:-31])[0])
-
 def get_search():
     url = ("https://search.12306.cn/search/v1/train/search?callback=jQuery&keyword={train}&date={date}").format(
         train=train_number, date=date)
@@ -69,9 +65,9 @@ def get_search():
     if r.text == '/**/jQuery({"data":[],"status":true,"errorMsg":""});' or r.text == '/**/jQuery({"data":null,"status":true,"errorMsg":""});':
         return("error")
     else:
-        return r.text
+        return (json.loads(r.text[19:-31])[0])
 
-print("多规则版，规则文件在“rules.txt”，格式为“广元 走马岭 0 1”（意为将广元站站名改为走马岭，并以广元站发车时间提前一分钟作为通过时间），可以用换行来增加规则。本项目使用并遵循GPLv3协议。程序作者：CDK6182CHR、denglihong2007。制作日期：2022.03.13。")
+print("多规则版，规则文件在“rules.txt”，格式为“广元 走马岭 0 1”（意为将广元站站名改为走马岭，并以广元站发车时间提前一分钟作为通过时间），可以用换行来增加规则。本项目使用并遵循GPLv3协议。程序作者：CDK6182CHR、denglihong2007。制作日期：2022.03.18。")
 date = str(input("您想爬取的日期是？（一次爬取仅可输入一次，如20220127）"))
 
 headers = {
@@ -98,12 +94,11 @@ while True:
     if train_number == "exit":
         graph.save('query_parse.pyetdb')
         csv_file.close()
-        os._exit(0)
+        exit()
 
     search = get_search()
     if search != "error":
-        get_train = train_get(search)
-        train_number_get = get_train['station_train_code']
+        train_number_get = search['station_train_code']
 
     while search == "error" or train_number_get != train_number:
         train_number = input("当日未查询到此车次，请重新输入。")
@@ -111,14 +106,13 @@ while True:
         if train_number == "exit":
             graph.save('query_parse.pyetdb')
             csv_file.close()
-            os._exit(0)
+            exit()
         if search != "error":
-            get_train = (json.loads(search[19:-31])[0])
-            train_number_get = get_train['station_train_code']
+            train_number_get = search['station_train_code']
 
-    train_no = get_train['train_no']
-    start_station = get_train['from_station']
-    to_station = get_train['to_station']
+    train_no = search['train_no']
+    start_station = search['from_station']
+    to_station = search['to_station']
     start_station_code = telecode_list[telecode_list.find(start_station + "|") + len(
         start_station) + 1:telecode_list.find(start_station + "|") + len(start_station) + 4]
     to_station_code = telecode_list[telecode_list.find(to_station + "|") + len(
@@ -137,7 +131,6 @@ while True:
     r.encoding = 'utf-8'
 
     if __name__ == '__main__':
-        text = r.text
-        train = Parsing_12306(text)
+        train = Parsing_12306(r.text)
         train.setFullCheci(train_number_get)
         graph.addTrain(train)
