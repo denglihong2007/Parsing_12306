@@ -8,46 +8,47 @@ from train_graph import data as ped
 
 graph = ped.Graph()
 
-def Parsing_12306(text: str) -> ped.Train:
+
+def parsing_12306(text: str) -> ped.Train:
     d = json.loads(text)['data']['data']
     train = ped.Train(graph)
     for dct in d:
         if dct['arrive_time'] == '----':
             dct['arrive_time'] = dct['start_time']
-        if ('station_name' in dct and dct['station_name'] in station_lists):
+        if 'station_name' in dct and dct['station_name'] in station_lists:
             rules_list = rules_lists[station_lists.index(dct['station_name'])]
-            if (('station_name' in dct) and rules_list[0] == dct['station_name']):
+            if ('station_name' in dct) and rules_list[0] == dct['station_name']:
                 dct['station_name'] = rules_list[1]
-                if (rules_list[2] != '0'):
-                    Time = datetime.datetime.strptime(
+                if rules_list[2] != '0':
+                    time = datetime.datetime.strptime(
                         dct['arrive_time'], "%H:%M")
                     dct['arrive_time'] = (
-                        Time + datetime.timedelta(minutes=int(rules_list[2]))).strftime("%H:%M")
+                            time + datetime.timedelta(minutes=int(rules_list[2]))).strftime("%H:%M")
                     dct['start_time'] = dct['arrive_time']
-                if (rules_list[3] != '0'):
-                    Time = datetime.datetime.strptime(
+                if rules_list[3] != '0':
+                    time = datetime.datetime.strptime(
                         dct['start_time'], "%H:%M")
                     dct['start_time'] = (
-                        Time + datetime.timedelta(minutes=int(rules_list[3]))).strftime("%H:%M")
+                            time + datetime.timedelta(minutes=int(rules_list[3]))).strftime("%H:%M")
                     dct['arrive_time'] = dct['start_time']
                 print(dct)
-        if ('start_station_name' in dct and dct['start_station_name'] in station_lists):
+        if 'start_station_name' in dct and dct['start_station_name'] in station_lists:
             rules_list = rules_lists[station_lists.index(
                 dct['start_station_name'])]
-            if (('start_station_name' in dct) and rules_list[0] == dct['start_station_name']):
+            if 'start_station_name' in dct and rules_list[0] == dct['start_station_name']:
                 dct['start_station_name'] = rules_list[1]
-                if (rules_list[2] != '0'):
-                    Time = datetime.datetime.strptime(
+                if rules_list[2] != '0':
+                    time = datetime.datetime.strptime(
                         dct['arrive_time'], "%H:%M")
                     dct['arrive_time'] = (
-                        Time + datetime.timedelta(minutes=int(rules_list[2]))).strftime("%H:%M")
-                if (rules_list[3] != '0'):
-                    Time = datetime.datetime.strptime(
+                            time + datetime.timedelta(minutes=int(rules_list[2]))).strftime("%H:%M")
+                if rules_list[3] != '0':
+                    time = datetime.datetime.strptime(
                         dct['start_time'], "%H:%M")
                     dct['start_time'] = (
-                        Time + datetime.timedelta(minutes=int(rules_list[3]))).strftime("%H:%M")
+                            time + datetime.timedelta(minutes=int(rules_list[3]))).strftime("%H:%M")
                 print(dct)
-        csv_writer.writerow([train_number,dct['station_name'],dct['arrive_time'],dct['start_time']])
+        csv_writer.writerow([train_number, dct['station_name'], dct['arrive_time'], dct['start_time']])
         train.addStation(dct['station_name'], dct['arrive_time'],
                          dct['start_time'], business=True)
         if sfz := dct.get('start_station_name'):
@@ -56,32 +57,35 @@ def Parsing_12306(text: str) -> ped.Train:
             train.zdz = zdz
     return train
 
+
 def get_search():
-    url = ("https://search.12306.cn/search/v1/train/search?callback=jQuery&keyword={train}&date={date}").format(
+    url = "https://search.12306.cn/search/v1/train/search?callback=jQuery&keyword={train}&date={date}".format(
         train=train_number, date=date)
-    print ("获取的搜索索引为" + url +"。")
+    print("获取的搜索索引为" + url + "。")
     r = requests.get(url, headers=headers)
     r.encoding = 'utf-8'
     if r.text == '/**/jQuery({"data":[],"status":true,"errorMsg":""});' or r.text == '/**/jQuery({"data":null,"status":true,"errorMsg":""});':
-        return("error")
+        return "error"
     else:
-        return (json.loads(r.text[19:-31])[0])
+        return json.loads(r.text[19:-31])[0]
 
-print("多规则版，规则文件在“rules.txt”，格式为“广元 走马岭 0 1”（意为将广元站站名改为走马岭，并以广元站发车时间提前一分钟作为通过时间），可以用换行来增加规则。本项目使用并遵循GPLv3协议。程序作者：CDK6182CHR、denglihong2007。制作日期：2022.03.18。")
+
+print(
+    "多规则版，规则文件在“rules.txt”，格式为“广元 走马岭 0 1”（意为将广元站站名改为走马岭，并以广元站发车时间提前一分钟作为通过时间），可以用换行来增加规则。本项目使用并遵循GPLv3协议。程序作者：CDK6182CHR、denglihong2007。制作日期：2022.03.19。")
 date = str(input("您想爬取的日期是？（一次爬取仅可输入一次，如20220127）"))
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36 Edge/97.0.1072.69'}
-csv_file = codecs.open('train_number.csv','w',encoding='utf-8-sig')
+csv_file = codecs.open('train_number.csv', 'w', encoding='utf-8-sig')
 csv_writer = csv.writer(csv_file)
 file = open('rules.txt', encoding='utf-8-sig', errors='ignore')
 station_lists = []
 rules_lists = []
 rule = "0"
-while (rule != list([])):
+while rule != list([]):
     rule = file.readline().split()
     rules_lists.append(rule)
-    if (rule != list([])):
+    if rule != list([]):
         station_lists.append(rule[0])
 
 with open("libs\\station_name.js", encoding='utf-8', errors='ignore') as fp:
@@ -121,8 +125,8 @@ while True:
     month = date[4:6]
     day = date[6:]
 
-    url = ("https://kyfw.12306.cn/otn/czxx/queryByTrainNo?train_no={train_no}&from_station_telecode={start_station_code}&to_station_telecode={to_station_code}&depart_date={year}-{month}-{day}").format(
-        train_no=train_no, start_station_code=start_station_code, to_station_code=to_station_code, year=year, month=month, day=day)
+    url = "https://kyfw.12306.cn/otn/czxx/queryByTrainNo?train_no={train_no}&from_station_telecode={start_station_code}&to_station_telecode={to_station_code}&depart_date={year}-{month}-{day}".format(
+        train_no=train_no, start_station_code=start_station_code, to_station_code=to_station_code, year=year,month=month, day=day)
     print("获取的车次信息为" + url + "。")
     print("查询到" + train_number_get + "的代码为" + train_no + "，起点站为" + start_station + "，终点站为" +
           to_station + "，起点电报码为" + start_station_code + "，终点电报码为" + to_station_code + "。")
@@ -131,6 +135,6 @@ while True:
     r.encoding = 'utf-8'
 
     if __name__ == '__main__':
-        train = Parsing_12306(r.text)
+        train = parsing_12306(r.text)
         train.setFullCheci(train_number_get)
         graph.addTrain(train)
