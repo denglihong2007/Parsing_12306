@@ -5,7 +5,6 @@ import codecs
 import datetime
 from PyQt5.QtWidgets import QFileDialog
 from train_graph import data as ped
-from urllib3 import proxy_from_url
 
 def parsing_12306(text: str) -> ped.Train:
     d = json.loads(text)['data']['data']

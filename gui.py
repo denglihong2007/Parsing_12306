@@ -15,6 +15,8 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(533, 389)
+        MainWindow.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint)
+        MainWindow.setFixedSize(MainWindow.width(), MainWindow.height())
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.widget = QtWidgets.QWidget(self.centralwidget)
@@ -118,7 +120,7 @@ class Ui_MainWindow(object):
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "Parsing 12306 U50"))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Parsing 12306 U51"))
         self.label.setText(_translate("MainWindow", "目标日期："))
         self.sure_date.setText(_translate("MainWindow", "确定"))
         self.label_2.setText(_translate("MainWindow", "目标车次："))
