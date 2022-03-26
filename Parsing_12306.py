@@ -12,6 +12,7 @@ if __name__ == '__main__':
     MainWindow.show()
     ui.sure_date.clicked.connect(partial(use.sure_date,ui))
     ui.sure_train_number.clicked.connect(partial(use.sure_train_number,ui))
+    ui.sure_proxy.clicked.connect(partial(use.sure_proxy,ui))
     ui.quit.clicked.connect(use.quit)
-    ui.save_quit.clicked.connect(use.save_quit)
+    ui.save.clicked.connect(use.save)
     sys.exit(app.exec_())
