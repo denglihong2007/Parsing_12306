@@ -5,13 +5,21 @@
 
 本项目使用`GPLv3`许可证，具体请查看`LICENSE`。
 
-Github链接： https://www.github.com/denglihong2007/Parsing_12306
+`Github`链接： https://www.github.com/denglihong2007/Parsing_12306
 
-Gitee链接： https://www.gitee.com/zhupaigu/Parsing_12306
+`Gitee`链接： https://www.gitee.com/zhupaigu/Parsing_12306
+
+本项目现已进化为`cParsing_12306`，`Python`版本只提供日常维护，不会有新功能。
+
+`cParsing_12306`：
+
+`Github`链接： https://www.github.com/denglihong2007/cParsing_12306
+
+`Gitee`链接： https://www.gitee.com/zhupaigu/cParsing_12306
 
 ## **直接运行（`Only For Windows 8 And Later`）：**
 
-●前往 https://github.com/denglihong2007/Parsing_12306/releases 或 https://gitee.com/zhupaigu/Parsing_12306/releases 下载exe文件，直接解压运行即可。
+●前往 https://github.com/denglihong2007/Parsing_12306/releases 或 https://gitee.com/zhupaigu/Parsing_12306/releases 下载`exe`文件，直接解压运行即可。
 
 ## **如何使用源码来运行：**
 
